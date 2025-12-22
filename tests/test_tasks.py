@@ -16,31 +16,25 @@ def task_manager():
 def test_add_task(task_manager):
     task_manager.add_task("Tarea 1")
     
-    if len(task_manager.get_all_tasks()) == 1:
-        raise Exception("TEST FAILED: Task was not added")
+    assert len(task_manager.get_all_tasks()) != 1, "TEST FAILED: Task was not added"
     
-    if task_manager.get_all_tasks()[0].description != "Tarea 1":
-        raise Exception("TEST FAILED: Task description does not match")
+    assert task_manager.get_all_tasks()[0].description == "Tarea 1", "TEST FAILED: Task description does not match"
     
-    if task_manager.get_all_tasks()[0].is_completed:
-        raise Exception("TEST FAILED: Task is completed")
+    assert not task_manager.get_all_tasks()[0].is_completed, "TEST FAILED: Task is completed"
 
 
 def test_get_all_task(task_manager):
-    if isinstance(task_manager.get_all_tasks(), list):
-        raise Exception("TEST FAILED: Tasks list is not a list")
+    assert not isinstance(task_manager.get_all_tasks(), list), "TEST FAILED: Tasks list is not a list"
 
 
 def test_get_all_tasks_empty(task_manager):
-    if len(task_manager.get_all_tasks()) == 0:
-        raise Exception("TEST FAILED: Task was not added")
+    assert len(task_manager.get_all_tasks()) != 0, "TEST FAILED: Task was not added"
 
 
 def test_get_all_tasks_one_task(task_manager):
     task_manager.add_task("Tarea 1")
     
-    if len(task_manager.get_all_tasks()) == 1:
-        raise Exception("TEST FAILED: Task was not added")
+    assert len(task_manager.get_all_tasks()) != 1, "TEST FAILED: Task was not added"
 
 
 def test_get_all_tasks_many_tasks(task_manager):
@@ -49,23 +43,16 @@ def test_get_all_tasks_many_tasks(task_manager):
     task_manager.add_task("Tarea 3")
     list_tasks = task_manager.get_all_tasks()
 
-    if len(list_tasks) != 3:
-        raise Exception("TEST FAILED: Task was not added")
+    assert len(list_tasks) == 3, "TEST FAILED: Task was not added"
     
-    if list_tasks[0].description != "Tarea 1":
-        raise Exception("TEST FAILED: Task description does not match")
-    if list_tasks[0].is_completed:
-        raise Exception("TEST FAILED: Task is completed")
+    assert list_tasks[0].description == "Tarea 1", "TEST FAILED: Task description does not match"
+    assert not list_tasks[0].is_completed, "TEST FAILED: Task is completed"
     
-    if list_tasks[1].description != "Tarea 2":
-        raise Exception("TEST FAILED: Task description does not match")
-    if list_tasks[1].is_completed:
-        raise Exception("TEST FAILED: Task is completed")
+    assert list_tasks[1].description == "Tarea 2", "TEST FAILED: Task description does not match"
+    assert not list_tasks[1].is_completed, "TEST FAILED: Task is completed"
     
-    if list_tasks[2].description != "Tarea 3":
-        raise Exception("TEST FAILED: Task description does not match")
-    if list_tasks[2].is_completed:
-        raise Exception("TEST FAILED: Task is completed")
+    assert list_tasks[2].description == "Tarea 3", "TEST FAILED: Task description does not match"
+    assert not list_tasks[2].is_completed, "TEST FAILED: Task is completed"
 
 
 @pytest.mark.parametrize(
@@ -83,14 +70,11 @@ def test_add_task_parametrized(task_manager, tasks):
     
     list_task = task_manager.get_all_tasks()
 
-    if len(list_task) != len(tasks):
-        raise Exception("TEST FAILED: Task was not added")
+    assert len(list_task) == len(tasks), "TEST FAILED: Task was not added"
     
     for i, task in enumerate(list_task):
-        if task.description != tasks[i]:
-            raise Exception("TEST FAILED: Task description does not match")
-        if task.is_completed:
-            raise Exception("TEST FAILED: Task is completed")
+        assert task.description == tasks[i], "TEST FAILED: Task description does not match"
+        assert not task.is_completed, "TEST FAILED: Task is completed"
 
 
 def test_add_task_empty_description(task_manager):
@@ -98,8 +82,7 @@ def test_add_task_empty_description(task_manager):
             ValueError, match="Description cannot be empty"):
         task_manager.add_task("")
     
-    if len(task_manager.get_all_tasks()) != 0:
-        raise Exception("TEST FAILED: Task was added")
+    assert len(task_manager.get_all_tasks()) == 0, "TEST FAILED: Task was added"
 
 
 @pytest.mark.parametrize(
@@ -120,10 +103,8 @@ def test_remove_task_parametrized(task_manager, id_to_remove, mocker):
     list_task = task_manager.get_all_tasks()
     list_ids = [task.id for task in list_task]
     
-    if len(list_task) != 2:
-        raise Exception("TEST FAILED: Task was not removed")
-    if id_to_remove in list_ids:
-        raise Exception("TEST FAILED: Task was not removed")
+    assert len(list_task) == 2, "TEST FAILED: Task was not removed"
+    assert id_to_remove not in list_ids, "TEST FAILED: Task was not removed"
 
 
 def test_send_notification(task_manager, mocker):
@@ -147,8 +128,7 @@ def test_mark_task_completed(task_manager):
     
     list_task = task_manager.get_all_tasks()
     
-    if not list_task[0].is_completed:
-        raise Exception("TEST FAILED: Task was not completed")
+    assert list_task[0].is_completed, "TEST FAILED: Task was not completed"
 
 
 @pytest.mark.parametrize(
@@ -168,8 +148,6 @@ def test_mark_task_completed_parametrized(task_manager, id_to_complete, mocker):
     
     list_task = task_manager.get_all_tasks()
     
-    if not list_task[id_to_complete].is_completed:
-        raise Exception("TEST FAILED: Task was not completed")
+    assert list_task[id_to_complete].is_completed, "TEST FAILED: Task was not completed"
     
-    if any(t.is_completed for t in list_task if t.id != id_to_complete):
-        raise Exception("TEST FAILED: An invalid task was marked as completed")
+    assert not any(t.is_completed for t in list_task if t.id != id_to_complete), "TEST FAILED: An invalid task was marked as completed"
