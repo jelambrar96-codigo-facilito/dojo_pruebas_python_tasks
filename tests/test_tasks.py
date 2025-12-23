@@ -25,7 +25,8 @@ def test_add_task(task_manager):
 
 
 def test_get_all_task(task_manager):
-    assert not isinstance(task_manager.get_all_tasks(), list), "TEST FAILED: Tasks list is not a list"
+    list_tasks = task_manager.get_all_tasks()
+    assert isinstance(list_tasks, list), "TEST FAILED: Tasks list is not a list"
 
 
 def test_get_all_tasks_empty(task_manager):
@@ -84,6 +85,24 @@ def test_add_task_empty_description(task_manager):
         task_manager.add_task("")
     
     assert len(task_manager.get_all_tasks()) == 0, "TEST FAILED: Task was added"
+
+
+@pytest.mark.parametrize(
+    "id_task",
+    [ (1), (2), (3) ]
+)
+def test_get_task_by_id(task_manager, id_task, mocker):
+
+    mock_generate_id = mocker.patch("tasks.TaskManager.generate_id")
+    mock_generate_id.side_effect = count(1) # Genera un contador infinito
+
+    task_manager.add_task("Tarea 1")
+    task_manager.add_task("Tarea 2")
+    task_manager.add_task("Tarea 3")
+    
+    task_selected = task_manager.get_task_by_id(id_task)
+    assert task_selected is not None, "TEST FAILED: Task was not found"
+    assert task_selected.id == id_task, "TEST FAILED: Task ID does not match"
 
 
 @pytest.mark.parametrize(
