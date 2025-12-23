@@ -1,3 +1,5 @@
+import pytest
+
 from itertools import count
 from tasks import TaskManager
 
@@ -10,7 +12,6 @@ def test_example():
 def task_manager():
     task_manager = TaskManager()
     yield task_manager
-    task_manager.clear()
 
 
 def test_add_task(task_manager):
@@ -124,7 +125,7 @@ def test_mark_task_completed(task_manager):
     task_manager.add_task("Tarea 1")
 
     unique_task = task_manager.get_all_tasks()[0]
-    task_manager.mark_task_completed(unique_task.id)
+    task_manager.mark_task_as_completed(unique_task.id)
     
     list_task = task_manager.get_all_tasks()
     
@@ -144,7 +145,7 @@ def test_mark_task_completed_parametrized(task_manager, id_to_complete, mocker):
     task_manager.add_task("Tarea 2")
     task_manager.add_task("Tarea 3")
     
-    task_manager.mark_task_completed(id_to_complete)
+    task_manager.mark_task_as_completed(id_to_complete)
     
     list_task = task_manager.get_all_tasks()
     
