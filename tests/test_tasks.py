@@ -149,6 +149,6 @@ def test_mark_task_completed_parametrized(task_manager, id_to_complete, mocker):
     
     list_task = task_manager.get_all_tasks()
     
-    assert list_task[id_to_complete].is_completed, "TEST FAILED: Task was not completed"
+    assert task_manager.get_task_by_id(id_to_complete).is_completed, "TEST FAILED: Task was not completed"
     
     assert not any(t.is_completed for t in list_task if t.id != id_to_complete), "TEST FAILED: An invalid task was marked as completed"
