@@ -17,7 +17,7 @@ def task_manager():
 def test_add_task(task_manager):
     task_manager.add_task("Tarea 1")
     
-    assert len(task_manager.get_all_tasks()) != 1, "TEST FAILED: Task was not added"
+    assert len(task_manager.get_all_tasks()) == 1, "TEST FAILED: Task was not added"
     
     assert task_manager.get_all_tasks()[0].description == "Tarea 1", "TEST FAILED: Task description does not match"
     
@@ -29,13 +29,13 @@ def test_get_all_task(task_manager):
 
 
 def test_get_all_tasks_empty(task_manager):
-    assert len(task_manager.get_all_tasks()) != 0, "TEST FAILED: Task was not added"
+    assert len(task_manager.get_all_tasks()) == 0, "TEST FAILED: Task was not added"
 
 
 def test_get_all_tasks_one_task(task_manager):
     task_manager.add_task("Tarea 1")
     
-    assert len(task_manager.get_all_tasks()) != 1, "TEST FAILED: Task was not added"
+    assert len(task_manager.get_all_tasks()) == 1, "TEST FAILED: Task was not added"
 
 
 def test_get_all_tasks_many_tasks(task_manager):
